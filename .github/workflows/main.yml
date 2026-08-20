@@ -15,19 +15,21 @@ on:
           - Pre-Release
           - Release
         default: Action
-      kernel_build_version:
-        description: "内核版本//Kernel Version (按手机系统与内核选，K70至尊/天玑9300+ 选 android14-6.1)"
+      build_target:
+        description: "内核版本//Kernel target (先大分支后小分支，K70至尊/天玑9300+ 选 android14-6.1)"
         type: choice
         options:
-          - All
-          - android12-5.10
-          - android13-5.10
-          - android13-5.15
-          - android14-5.15
-          - android14-6.1
-          - android15-6.6
-          - android16-6.12
-        default: All
+          - android14-6.1@75
+          - android14-6.1@145
+          - android14-6.1@lts
+          - android14-6.1@全部
+          - android12-5.10@全部
+          - android13-5.10@全部
+          - android13-5.15@全部
+          - android14-5.15@全部
+          - android15-6.6@全部
+          - android16-6.12@全部
+        default: android14-6.1@75
       feature_set:
         description: "功能组合//Feature Set (一般选 FULL 全功能即可)"
         type: choice
@@ -55,15 +57,6 @@ on:
         description: "SUSFS 指定提交 (留空=最新, 仅对所选内核版本生效)//SUSFS commit for selected kernel (empty = latest)"
         type: string
         required: false
-        default: ""
-      os_patch_level:
-        description: "指定内核子版本//Kernel sublevel (仅对 android14-6.1 有效，其余版本留空=全部)"
-        type: choice
-        options:
-          - ""
-          - lts
-          - "75"
-          - "145"
         default: ""
       custom_suffix:
         description: "自定义内核后缀 (uname -r 末尾, 留空=随机, 填 -1 关闭)//Custom kernel suffix (empty=random, -1=off)"
@@ -130,6 +123,24 @@ jobs:
           echo "nomount_commit=$sha" >> "$GITHUB_OUTPUT"
           echo "Resolved NoMount dev commit: $sha"
 
+  resolve-target:
+    runs-on: ubuntu-latest
+    outputs:
+      android_version: ${{ steps.parse.outputs.android_version }}
+      os_patch_level: ${{ steps.parse.outputs.os_patch_level }}
+    steps:
+      - name: Parse kernel target
+        id: parse
+        shell: bash
+        run: |
+          TARGET="${{ inputs.build_target }}"
+          AV="${TARGET%%@*}"
+          SL="${TARGET#*@}"
+          if [ "$SL" = "全部" ]; then SL=""; fi
+          echo "android_version=$AV" >> "$GITHUB_OUTPUT"
+          echo "os_patch_level=$SL" >> "$GITHUB_OUTPUT"
+          echo "Parsed: android_version=$AV, os_patch_level=$SL"
+
   build-nomount-module:
     needs: resolve-nomount
     runs-on: ubuntu-latest
@@ -157,14 +168,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android12-5.10') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android12-5.10' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android12-5.10.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -176,14 +188,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android13-5.10') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android13-5.10' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android13-5.10.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -195,14 +208,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android13-5.15') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android13-5.15' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android13-5.15.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -214,14 +228,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android14-5.15') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android14-5.15' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android14-5.15.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -233,14 +248,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android14-6.1') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android14-6.1' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android14-6.1.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -252,14 +268,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android15-6.6') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android15-6.6' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android15-6.6.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -271,14 +288,15 @@ jobs:
     needs:
     - prepare-ccache
     - resolve-nomount
-    if: ${{ !inputs.test_release_notes && (inputs.kernel_build_version == 'All' || inputs.kernel_build_version == 'android16-6.12') }}
+    - resolve-target
+    if: ${{ !inputs.test_release_notes && needs.resolve-target.outputs.android_version == 'android16-6.12' }}
     uses: ./.github/workflows/prepare.yml
     with:
       config_file: .github/config/android16-6.12.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
-      os_patch_level: ${{ inputs.os_patch_level }}
+      os_patch_level: ${{ needs.resolve-target.outputs.os_patch_level }}
       custom_suffix: ${{ inputs.custom_suffix }}
       build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
@@ -438,7 +456,7 @@ jobs:
           
           echo
           echo "> **SUSFS Commits:**"
-          echo "> - ${{ inputs.kernel_build_version }}: ${{ inputs.susfs_commit || 'latest' }}"
+          echo "> - ${{ inputs.build_target }}: ${{ inputs.susfs_commit || 'latest' }}"
         } >> "$GITHUB_STEP_SUMMARY"
 
     - name: 🧹 Cleanup Summary Files
@@ -464,6 +482,7 @@ jobs:
     permissions:
       contents: write
     needs:
+    - resolve-target
     - build-android12-5-10
     - build-android13-5-10
     - build-android13-5-15
@@ -484,7 +503,7 @@ jobs:
         set -euo pipefail
 
         failed=0
-        current_type="${{ inputs.kernel_build_version }}"
+        current_type="${{ needs.resolve-target.outputs.android_version }}"
 
         check_selected() {
           local target="$1"
