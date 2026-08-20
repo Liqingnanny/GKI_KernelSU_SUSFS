@@ -57,9 +57,13 @@ on:
         required: false
         default: ""
       os_patch_level:
-        description: "指定内核子版本 (留空=全部, 可填子版本号如 75 或日期如 2024-05 或 lts)//Kernel sublevel filter (empty=all, e.g. 75 / 2024-05 / lts)"
-        type: string
-        required: false
+        description: "指定内核子版本//Kernel sublevel (仅对 android14-6.1 有效，其余版本留空=全部)"
+        type: choice
+        options:
+          - ""
+          - lts
+          - "75"
+          - "145"
         default: ""
       custom_suffix:
         description: "自定义内核后缀 (uname -r 末尾, 留空=随机, 填 -1 关闭)//Custom kernel suffix (empty=random, -1=off)"
