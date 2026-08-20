@@ -61,6 +61,16 @@ on:
         type: string
         required: false
         default: ""
+      custom_suffix:
+        description: "自定义内核后缀 (uname -r 末尾, 留空=随机, 填 -1 关闭)//Custom kernel suffix (empty=random, -1=off)"
+        type: string
+        required: false
+        default: ""
+      build_time:
+        description: "自定义构建时间 (uname -r 时间戳, 填 F=UTC当前时间, 填 -1 关闭, 留空=默认)//Custom build time (F=UTC now, -1=off, empty=default)"
+        type: string
+        required: false
+        default: ""
 
 jobs:
   prepare-ccache:
@@ -151,6 +161,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
@@ -168,6 +180,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
@@ -185,6 +199,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
@@ -202,6 +218,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
@@ -219,6 +237,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
@@ -236,6 +256,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
@@ -253,6 +275,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       root_flavor: resukisu
       root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}

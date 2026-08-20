@@ -51,6 +51,16 @@ on:
         required: false
         type: string
         default: ""
+      custom_suffix:
+        description: "Custom kernel suffix (empty=random, -1=off)"
+        required: false
+        type: string
+        default: ""
+      build_time:
+        description: "Custom build time (F=UTC now, -1=off, empty=default)"
+        required: false
+        type: string
+        default: ""
       variant:
         description: "Artifact variant label"
         required: false
@@ -148,6 +158,8 @@ jobs:
       kernel_version: ${{ matrix.kernel_version }}
       sublevel: ${{ matrix.sublevel }}
       os_patch_level: ${{ matrix.os_patch_level }}
+      custom_suffix: ${{ inputs.custom_suffix }}
+      build_time: ${{ inputs.build_time }}
       variant: ${{ matrix.variant }}
       feature_set: ${{ inputs.feature_set }}
       ksu_branch: ${{ inputs.ksu_branch }}

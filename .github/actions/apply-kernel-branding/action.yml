@@ -16,6 +16,10 @@ inputs:
   sublevel:
     description: 'Sublevel of kernel version (e.g., 1)'
     required: true
+  custom_suffix:
+    description: 'Custom kernel suffix (empty=random, -1=off, otherwise use as-is)'
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -27,11 +31,25 @@ runs:
         VERSION="${{ inputs.version }}"
         ANDROID_PART=$(echo "$VERSION" | cut -d- -f1)
         KERNEL_PART=$(echo "$VERSION" | cut -d- -f2)
+        SUFFIX_INPUT="${{ inputs.custom_suffix }}"
+
+        if [ -n "$SUFFIX_INPUT" ] && [ "$SUFFIX_INPUT" != "-1" ]; then
+          SUFFIX_VALUE="$SUFFIX_INPUT"
+          echo "Using custom suffix: $SUFFIX_VALUE"
+        elif [ -z "$SUFFIX_INPUT" ]; then
+          RANDOM_DIGIT=$(od -An -N1 -tu1 < /dev/urandom | awk '{print $1 % 11}')
+          RANDOM_HASH=$(od -An -N7 -tx1 /dev/urandom | tr -d ' \n')
+          SUFFIX_VALUE="${RANDOM_DIGIT}-o-g${RANDOM_HASH}"
+          echo "Generated random suffix: $SUFFIX_VALUE"
+        else
+          SUFFIX_VALUE=""
+          echo "Custom suffix disabled (-1)"
+        fi
 
         if [[ ${{ inputs.version }} == "android15-6.6" || ${{ inputs.version }} == "android16-6.12" ]]; then
           KERNEL_STRING="$KERNEL_PART.${{ inputs.sublevel }}-$ANDROID_PART"
-          sed -i '$d' scripts/setlocalversion && echo "echo \"$KERNEL_STRING-Wild\"" >> scripts/setlocalversion
+          sed -i '$d' scripts/setlocalversion && echo "echo \"$KERNEL_STRING-$SUFFIX_VALUE\"" >> scripts/setlocalversion
         else
-          sed -i '$d' scripts/setlocalversion && echo "echo \"-$ANDROID_PART-Wild\"" >> scripts/setlocalversion
+          sed -i '$d' scripts/setlocalversion && echo "echo \"-$ANDROID_PART-$SUFFIX_VALUE\"" >> scripts/setlocalversion
         fi
         chmod +x scripts/setlocalversion
