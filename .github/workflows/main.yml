@@ -1,4 +1,4 @@
-name: 构建内核
+name: 构建内核 (ReSukiSU)
 
 permissions:
   contents: write
@@ -47,7 +47,7 @@ on:
           - FULL
         default: FULL
       ksu_branch:
-        description: "KernelSU 分支或commit (留空=最新 dev-susfs 分支)//KernelSU branch or commit (empty = latest dev-susfs)"
+        description: "Root分支 (本分支固定 ReSukiSU, 此项一般留空)//Root branch (this branch is pinned to ReSukiSU, usually leave empty)"
         type: string
         required: false
         default: ""
@@ -151,6 +151,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -166,6 +168,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -181,6 +185,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -196,6 +202,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -211,6 +219,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -226,6 +236,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -241,6 +253,8 @@ jobs:
       ksu_branch: ${{ inputs.ksu_branch }}
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
+      root_flavor: resukisu
+      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
