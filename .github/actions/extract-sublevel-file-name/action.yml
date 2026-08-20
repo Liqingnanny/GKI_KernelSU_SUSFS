@@ -38,7 +38,7 @@ runs:
           fi
         fi
 
-        FILE_NAME="${{ inputs.kernel_version }}.${SUBLEVEL}-${{ inputs.android_version }}-${{ inputs.os_patch_level }}"
+        FILE_NAME="ReSukiSU-${{ inputs.kernel_version }}.${SUBLEVEL}-${{ inputs.android_version }}-${{ inputs.os_patch_level }}"
         # Append variant only when it's provided and not the default 'Normal'
         if [ -n "${{ inputs.variant }}" ] && [ "${{ inputs.variant }}" != "Normal" ]; then
           FILE_NAME="${FILE_NAME}-${{ inputs.variant }}"

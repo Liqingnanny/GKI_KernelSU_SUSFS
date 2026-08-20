@@ -152,7 +152,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -169,7 +169,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -186,7 +186,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -203,7 +203,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -220,7 +220,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -237,7 +237,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -254,7 +254,7 @@ jobs:
       susfs_commit: ${{ inputs.susfs_commit }}
       os_patch_level: ${{ inputs.os_patch_level }}
       root_flavor: resukisu
-      root_commit: 3ef06b0fcb0960dc9563256fe26a58e892663387
+      root_commit: 06390a6acbb7e966b3e1cda00fc1b93e89f11086
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
