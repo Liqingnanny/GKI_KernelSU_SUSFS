@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: "发布类型 (Action=只上传构建产物; Pre-Release=预发布; Release=正式发布)"
+        description: "发布类型//Release Type (Action=只上传构建产物, Pre-Release=预发布, Release=正式发布)"
         type: choice
         options:
           - Action
@@ -16,7 +16,7 @@ on:
           - Release
         default: Action
       kernel_build_version:
-        description: "内核版本 (按你手机的系统版本和内核选，小米K70至尊/天玑9300+选 android14-6.1)"
+        description: "内核版本//Kernel Version (按手机系统与内核选，K70至尊/天玑9300+ 选 android14-6.1)"
         type: choice
         options:
           - All
@@ -29,7 +29,7 @@ on:
           - android16-6.12
         default: All
       feature_set:
-        description: "功能组合 (一般选 FULL 全功能即可)"
+        description: "功能组合//Feature Set (一般选 FULL 全功能即可)"
         type: choice
         options:
           - KSUN+SUSFS+NOMOUNT
@@ -47,42 +47,12 @@ on:
           - FULL
         default: FULL
       ksu_branch:
-        description: "KernelSU 分支或 commit (留空=使用最新 dev-susfs 分支)"
+        description: "KernelSU 分支或commit (留空=最新 dev-susfs 分支)//KernelSU branch or commit (empty = latest dev-susfs)"
         type: string
         required: false
         default: ""
-      susfs_commit_android12-5-10:
-        description: "SUSFS 指定提交 - android12-5.10 (留空=最新)"
-        type: string
-        required: false
-        default: ""
-      susfs_commit_android13-5-10:
-        description: "SUSFS 指定提交 - android13-5.10 (留空=最新)"
-        type: string
-        required: false
-        default: ""
-      susfs_commit_android13-5-15:
-        description: "SUSFS 指定提交 - android13-5.15 (留空=最新)"
-        type: string
-        required: false
-        default: ""
-      susfs_commit_android14-5-15:
-        description: "SUSFS 指定提交 - android14-5.15 (留空=最新)"
-        type: string
-        required: false
-        default: ""
-      susfs_commit_android14-6-1:
-        description: "SUSFS 指定提交 - android14-6.1 (留空=最新)"
-        type: string
-        required: false
-        default: ""
-      susfs_commit_android15-6-6:
-        description: "SUSFS 指定提交 - android15-6.6 (留空=最新)"
-        type: string
-        required: false
-        default: ""
-      susfs_commit_android16-6-12:
-        description: "SUSFS 指定提交 - android16-6.12 (留空=最新)"
+      susfs_commit:
+        description: "SUSFS 指定提交 (留空=最新, 仅对所选内核版本生效)//SUSFS commit for selected kernel (empty = latest)"
         type: string
         required: false
         default: ""
@@ -174,7 +144,7 @@ jobs:
       config_file: .github/config/android12-5.10.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android12-5-10 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -188,7 +158,7 @@ jobs:
       config_file: .github/config/android13-5.10.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android13-5-10 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -202,7 +172,7 @@ jobs:
       config_file: .github/config/android13-5.15.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android13-5-15 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -216,7 +186,7 @@ jobs:
       config_file: .github/config/android14-5.15.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android14-5-15 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -230,7 +200,7 @@ jobs:
       config_file: .github/config/android14-6.1.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android14-6-1 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -244,7 +214,7 @@ jobs:
       config_file: .github/config/android15-6.6.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android15-6-6 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -258,7 +228,7 @@ jobs:
       config_file: .github/config/android16-6.12.json
       feature_set: ${{ inputs.feature_set || 'FULL' }}
       ksu_branch: ${{ inputs.ksu_branch }}
-      susfs_commit: ${{ inputs.susfs_commit_android16-6-12 }}
+      susfs_commit: ${{ inputs.susfs_commit }}
       nomount_commit: ${{ needs.resolve-nomount.outputs.nomount_commit }}
     secrets: inherit
 
@@ -414,13 +384,7 @@ jobs:
           
           echo
           echo "> **SUSFS Commits:**"
-          echo "> - android12-5.10: ${{ inputs.susfs_commit_android12-5-10 || 'latest' }}"
-          echo "> - android13-5.10: ${{ inputs.susfs_commit_android13-5-10 || 'latest' }}"
-          echo "> - android13-5.15: ${{ inputs.susfs_commit_android13-5-15 || 'latest' }}"
-          echo "> - android14-5.15: ${{ inputs.susfs_commit_android14-5-15 || 'latest' }}"
-          echo "> - android14-6.1: ${{ inputs.susfs_commit_android14-6-1 || 'latest' }}"
-          echo "> - android15-6.6: ${{ inputs.susfs_commit_android15-6-6 || 'latest' }}"
-          echo "> - android16-6.12: ${{ inputs.susfs_commit_android16-6-12 || 'latest' }}"
+          echo "> - ${{ inputs.kernel_build_version }}: ${{ inputs.susfs_commit || 'latest' }}"
         } >> "$GITHUB_STEP_SUMMARY"
 
     - name: 🧹 Cleanup Summary Files
