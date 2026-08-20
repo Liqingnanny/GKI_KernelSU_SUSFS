@@ -1,4 +1,4 @@
-name: Build Kernels
+name: 构建内核
 
 permissions:
   contents: write
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: "Release Type"
+        description: "发布类型 (Action=只上传构建产物; Pre-Release=预发布; Release=正式发布)"
         type: choice
         options:
           - Action
@@ -16,7 +16,7 @@ on:
           - Release
         default: Action
       kernel_build_version:
-        description: "Kernel Version"
+        description: "内核版本 (按你手机的系统版本和内核选，小米K70至尊/天玑9300+选 android14-6.1)"
         type: choice
         options:
           - All
@@ -29,7 +29,7 @@ on:
           - android16-6.12
         default: All
       feature_set:
-        description: "Feature Set"
+        description: "功能组合 (一般选 FULL 全功能即可)"
         type: choice
         options:
           - KSUN+SUSFS+NOMOUNT
@@ -47,42 +47,42 @@ on:
           - FULL
         default: FULL
       ksu_branch:
-        description: "KernelSU branch or commit (empty = latest dev-susfs branch tip)"
+        description: "KernelSU 分支或 commit (留空=使用最新 dev-susfs 分支)"
         type: string
         required: false
         default: ""
       susfs_commit_android12-5-10:
-        description: "SUSFS commit for android12-5.10 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android12-5.10 (留空=最新)"
         type: string
         required: false
         default: ""
       susfs_commit_android13-5-10:
-        description: "SUSFS commit for android13-5.10 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android13-5.10 (留空=最新)"
         type: string
         required: false
         default: ""
       susfs_commit_android13-5-15:
-        description: "SUSFS commit for android13-5.15 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android13-5.15 (留空=最新)"
         type: string
         required: false
         default: ""
       susfs_commit_android14-5-15:
-        description: "SUSFS commit for android14-5.15 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android14-5.15 (留空=最新)"
         type: string
         required: false
         default: ""
       susfs_commit_android14-6-1:
-        description: "SUSFS commit for android14-6.1 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android14-6.1 (留空=最新)"
         type: string
         required: false
         default: ""
       susfs_commit_android15-6-6:
-        description: "SUSFS commit for android15-6.6 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android15-6.6 (留空=最新)"
         type: string
         required: false
         default: ""
       susfs_commit_android16-6-12:
-        description: "SUSFS commit for android16-6.12 (empty = latest branch tip)"
+        description: "SUSFS 指定提交 - android16-6.12 (留空=最新)"
         type: string
         required: false
         default: ""
